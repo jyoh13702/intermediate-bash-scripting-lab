@@ -21,7 +21,8 @@ read -p "Enter your choice: " choice
 if [ "$choice" -eq 1 ]; then
     echo "=== System Information ==="
     echo "Operating System:"
-    hostnamectl | grep "Operating System"
+    uname -s
+    uname -v
     echo
     echo "Hostname:"
     hostname
@@ -30,14 +31,28 @@ if [ "$choice" -eq 1 ]; then
     uname -r
     echo
     echo "System Uptime:"
-    uptime -p
+    uptime
 elif [ "$choice" -eq 2 ]; then
     echo "=== Disk Usage ==="
     df -h
 elif [ "$choice" -eq 3 ]; then
-    echo "=== Current Users ==="
-    echo "Logged-in users and their running processes:"
-    w
+    logged_in_users=$(who | awk '{print $1}' | sort -u)
+
+    echo "--- Currently Logged In Users and their Running Applications ---"
+
+    # Iterate over each logged-in user
+    for user in $logged_in_users; do
+        echo ""
+        echo "====================================================="
+        echo "User: $user"
+        echo "====================================================="
+        # List all processes (applications) for the specific user
+        # ps -u [username] shows processes owned by that user
+        # 'u' option provides detailed info in user format (UID, PID, %CPU, %MEM, etc.)
+        ps -u "$user" -o pid,pcpu,pmem,etime
+    done
+    echo ""
+    echo "--- Report Complete ---"
 elif [ "$choice" -eq 4 ]; then
     echo "Exiting the script. Goodbye!"
     exit 0
