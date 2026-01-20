@@ -11,7 +11,8 @@ echo "Welcome, select one of the following options using the number keys:"
 echo "1: Show System Info"
 echo "2: Show Disk Usage"
 echo "3: Show Current Users"
-echo "4: Exit"
+echo "4. Show Top Processes"
+echo "5: Exit"
 echo
 
 # Read user input
@@ -54,6 +55,12 @@ elif [ "$choice" -eq 3 ]; then
     echo ""
     echo "--- Report Complete ---"
 elif [ "$choice" -eq 4 ]; then
+    TOP_COUNT=5
+    echo "Top $TOP_COUNT CPU-intensive processes:"
+
+    ps -A -o pid,user,%cpu,comm --sort -%cpu | head -n "$(($TOP_COUNT + 1))"
+
+elif [ "$choice" -eq 5 ]; then
     echo "Exiting the script. Goodbye!"
     exit 0
 else
