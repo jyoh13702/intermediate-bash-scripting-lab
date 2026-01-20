@@ -55,10 +55,9 @@ elif [ "$choice" -eq 3 ]; then
     echo ""
     echo "--- Report Complete ---"
 elif [ "$choice" -eq 4 ]; then
-    TOP_COUNT=5
-    echo "Top $TOP_COUNT CPU-intensive processes:"
-
-    ps -A -o pid,user,%cpu,comm --sort -%cpu | head -n "$(($TOP_COUNT + 1))"
+    echo "=== Top 5 CPU-Intensive Processes ==="
+    echo "PID     USER     CPU%    COMMAND"
+    ps -eo pid,user,%cpu,comm --sort=-%cpu | head -n 6
 
 elif [ "$choice" -eq 5 ]; then
     echo "Exiting the script. Goodbye!"
